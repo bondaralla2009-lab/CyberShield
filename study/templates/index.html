@@ -1,0 +1,408 @@
+{% extends "base.html" %}
+
+{% block title %}КиберЩит - Главная{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* ============= ПЕРВЫЙ ЭКРАН ============= */
+    .hero-section {
+        height: 105vh;
+        position: relative;
+        background-color: #00092F;
+    }
+
+    /* Верхняя полоса */
+    .top-bar {
+        height: 60px;
+        background-color: #00092F;
+        display: flex;
+        align-items: center;
+        padding-left: 40px;
+        position: relative;
+        z-index: 3;
+    }
+
+    .site-title {
+        color: #E5E9F0;
+        font-size: 1.8rem;
+        font-weight: bold;
+        text-shadow: 0 0 80px #00FF85;
+    }
+
+    /* Поле с кнопками */
+    .nav-bar {
+        height: 45px;
+        background-color: #081246;
+        display: flex;
+        align-items: center;
+        padding: 0 40px;
+        position: relative;
+        z-index: 3;
+    }
+
+    .main-nav {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    /* ⬇️⬇️⬇️ ЗДЕСЬ ТЕПЕРЬ ДВИГАЕМ КНОПКИ ⬇️⬇️⬇️ */
+
+    /* Для "Виды мошенничества" */
+    .nav-button-fraud {
+        margin-left: 10px !important;        /* ← МЕНЯЙ ЗДЕСЬ */
+        transition: transform 0.2s ease;
+    }
+
+    .nav-button-fraud:hover {
+        transform: translateY(-3px);
+    }
+
+    /* Контейнер правых кнопок */
+    .right-buttons {
+        display: flex;
+        gap: 40px;
+    }
+
+    /* Для "База номеров" */
+    .nav-button-phone {
+        margin-left: 0px !important;         /* ← МЕНЯЙ ЗДЕСЬ */
+        transition: transform 0.2s ease;
+    }
+
+    .nav-button-phone:hover {
+        transform: translateY(-3px);
+    }
+
+    /* Для "Статистика" */
+    .nav-button-stats {
+        margin-left: 0px !important;
+        transition: transform 0.2s ease;
+    }
+
+    .nav-button-stats:hover {
+        transform: translateY(-3px);
+    }
+
+    /* Для "Тренажер" */
+    .nav-button-trainer {
+        margin-left: 0px !important;
+        transition: transform 0.2s ease;
+    }
+
+    .nav-button-trainer:hover {
+        transform: translateY(-3px);
+    }
+
+    /* Для "Чек-лист" */
+    .nav-button-checklist {
+        margin-left: 0px !important;
+        transition: transform 0.2s ease;
+    }
+
+    .nav-button-checklist:hover {
+        transform: translateY(-3px);
+    }
+
+    /* ⬆️⬆️⬆️ ЗДЕСЬ ТЕПЕРЬ ДВИГАЕМ КНОПКИ ⬆️⬆️⬆️ */
+
+    /* ============= КНОПКИ РЕГИСТРАЦИИ ============= */
+    .auth-buttons {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        display: flex;
+        gap: 20px;
+        z-index: 20;
+    }
+
+    .auth-btn {
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+
+    .login-btn {
+        border: 2px solid #0b2a5b;
+        color: white;
+        background: transparent;
+        box-shadow: 0 0 60px #001b94;
+    }
+
+    .login-btn:hover {
+        background-color: #185ecd;
+        color: #00092F;
+        transform: scale(1.05);
+    }
+
+    .register-btn {
+        background-color: #185ecd;
+        color: #00092F;
+        border: 2px solid #185ecd;
+    }
+
+    .register-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 70px #001b94;
+    }
+
+    /* ============= ФОТО ============= */
+    .image-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+        pointer-events: none;
+    }
+
+    .image-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        pointer-events: none;
+    }
+
+    /* ============= СТРАНИЦА С НОМЕРАМИ ============= */
+    .phones-section {
+        min-height: 100vh;
+        background-color: #00092F;
+        padding: 60px 40px;
+        border-top: 2px solid #081246;
+    }
+
+    .phones-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .phones-title {
+        color: #00FF85;
+        font-size: 2.5rem;
+        margin-bottom: 40px;
+        text-align: center;
+    }
+
+    .table-container {
+        background-color: #081246;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 30px;
+    }
+
+    th {
+        text-align: left;
+        padding: 15px 10px;
+        color: #00FF85;
+        font-size: 1.2rem;
+        border-bottom: 2px solid #00FF85;
+    }
+
+    td {
+        padding: 15px 10px;
+        border-bottom: 1px solid #2A3A5F;
+    }
+
+    .number-cell {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: white;
+    }
+
+    .danger-badge {
+        background-color: rgba(255, 75, 75, 0.2);
+        color: #FF4B4B;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+
+    .source-badge {
+        background-color: rgba(0, 255, 133, 0.2);
+        color: #00FF85;
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 0.7rem;
+    }
+
+    .report-count {
+        font-weight: bold;
+        color: #FFD700;
+    }
+
+    .update-time {
+        text-align: right;
+        color: #8892B0;
+        font-size: 0.8rem;
+        margin-bottom: 10px;
+    }
+
+    .check-button {
+        display: inline-block;
+        background-color: #00FF85;
+        color: #00092F;
+        padding: 15px 40px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1.2rem;
+        transition: 0.3s;
+    }
+
+    .check-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 15px #00FF85;
+    }
+
+    .footer-note {
+        text-align: center;
+        margin-top: 20px;
+        color: #8892B0;
+        font-size: 0.9rem;
+    }
+
+    /* ============= СТРАНИЦА "ВИДЫ МОШЕННИЧЕСТВА" ============= */
+    .fraud-page {
+        min-height: 100vh;
+        background-color: #00092F;
+        padding: 60px 40px;
+        border-top: 2px solid #081246;
+    }
+
+    .fraud-title {
+        color: #00FF85;
+        font-size: 3rem;
+        margin-bottom: 40px;
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- ПЕРВЫЙ ЭКРАН -->
+<section class="hero-section">
+    <!-- Верхняя полоса -->
+    <div class="top-bar">
+        <div class="site-title">CyberShield</div>
+    </div>
+
+    <!-- Поле с кнопками -->
+    <div class="nav-bar">
+        <nav class="main-nav">
+            <!-- Кнопка "Виды мошенничества" -->
+            <a href="#fraud-page" class="nav-button-left nav-button-fraud">Виды мошенничества</a>
+            <div class="right-buttons">
+                <!-- Правые кнопки -->
+                <a href="#phones" class="nav-button-right nav-button-phone">База номеров</a>
+                <a href="/statistics" class="nav-button-right nav-button-stats">Статистика</a>
+                <a href="/interactive" class="nav-button-right nav-button-trainer">Тренажер</a>
+                <a href="/checklist" class="nav-button-right nav-button-checklist">Чек-лист</a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Кнопки регистрации -->
+    <div class="auth-buttons">
+        {% if session.user_id %}
+        <span style="color: #00FF85;">{{ session.username }}</span>
+        <a href="/account" class="auth-btn" style="background-color: #00FF85; color: #00092F; padding: 8px 20px; border-radius: 8px;">Аккаунт</a>
+        <a href="/logout" class="auth-btn" style="border: 2px solid #FF4B4B; color: #FF4B4B; padding: 8px 20px; border-radius: 8px;">Выйти</a>
+        {% else %}
+        <a href="/login" class="auth-btn login-btn">Войти</a>
+        <a href="/register" class="auth-btn register-btn">Регистрация</a>
+        {% endif %}
+    </div>
+
+    <!-- Фото -->
+    <div class="image-container">
+        <img src="/static/img/Group 6 (12).png" alt="Фото">
+    </div>
+</section>
+
+<!-- Страница с номерами -->
+<section id="phones" class="phones-section">
+    <div class="phones-container">
+        <h1 class="phones-title">📋 База номеров мошенников</h1>
+        <div class="update-time">
+            Данные обновлены: {{ now().strftime('%d.%m.%Y %H:%M') if now else 'сегодня' }}
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Номер телефона</th>
+                    <th>Жалоб</th>
+                    <th>Источник</th>
+                    <th>Статус</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for phone in phones %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td class="number-cell">
+                        +{{ phone[0][0:1] }} ({{ phone[0][1:4] }}) {{ phone[0][4:7] }}-{{ phone[0][7:9] }}-{{ phone[0][9:11] }}
+                    </td>
+                    <td><span class="report-count">{{ phone[1] }}</span></td>
+                    <td>
+                        {% if phone[2] == 'official' %}
+                        <span class="source-badge">🏛️ Официальный</span>
+                        {% else %}
+                        <span class="source-badge">👤 Пользователи</span>
+                        {% endif %}
+                    </td>
+                    <td><span class="danger-badge">⚠️ ОПАСНО</span></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div style="text-align: center;">
+                <a href="/check" class="check-button">🔍 Проверить номер</a>
+            </div>
+        </div>
+        <p class="footer-note">* Данные собираются автоматически с сайтов МВД, ЦБ РФ и открытых источников</p>
+    </div>
+</section>
+
+<!-- Страница "Виды мошенничества" -->
+<section id="fraud-page" class="fraud-page">
+    <div class="container">
+        <h1 class="fraud-title">Виды мошенничества</h1>
+        <p>Здесь будет информация о различных видах кибермошенничества:</p>
+        <ul style="margin-top: 30px; margin-left: 40px;">
+            <li>Фишинг</li>
+            <li>Вишинг</li>
+            <li>Смишинг</li>
+            <li>Мошенничество на маркетплейсах</li>
+            <li>Инвестиционные ловушки</li>
+        </ul>
+    </div>
+</section>
+
+<script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+{% endblock %}
