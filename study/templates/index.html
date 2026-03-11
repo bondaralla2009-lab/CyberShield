@@ -4,7 +4,7 @@
 
 {% block extra_css %}
 <style>
-    /* ============= ПЕРВЫЙ ЭКРАН ============= */
+
     .hero-section {
         height: 105vh;
         position: relative;
@@ -46,11 +46,11 @@
         width: 100%;
     }
 
-    /* ⬇️⬇️⬇️ ЗДЕСЬ ТЕПЕРЬ ДВИГАЕМ КНОПКИ ⬇️⬇️⬇️ */
+                    /* ЗДЕСЬ ТЕПЕРЬ ДВИГАЕМ КНОПКИ  */
 
     /* Для "Виды мошенничества" */
     .nav-button-fraud {
-        margin-left: 10px !important;        /* ← МЕНЯЙ ЗДЕСЬ */
+        margin-left: 10px !important;
         transition: transform 0.2s ease;
     }
 
@@ -66,7 +66,7 @@
 
     /* Для "База номеров" */
     .nav-button-phone {
-        margin-left: 0px !important;         /* ← МЕНЯЙ ЗДЕСЬ */
+        margin-left: 0px !important;
         transition: transform 0.2s ease;
     }
 
@@ -104,9 +104,7 @@
         transform: translateY(-3px);
     }
 
-    /* ⬆️⬆️⬆️ ЗДЕСЬ ТЕПЕРЬ ДВИГАЕМ КНОПКИ ⬆️⬆️⬆️ */
-
-    /* ============= КНОПКИ РЕГИСТРАЦИИ ============= */
+            /*  КНОПКИ РЕГИСТРАЦИИ  */
     .auth-buttons {
         position: absolute;
         top: 10px;
@@ -150,7 +148,7 @@
         box-shadow: 0 0 70px #001b94;
     }
 
-    /* ============= ФОТО ============= */
+                         /*ФОТО*/
     .image-container {
         position: absolute;
         top: 0;
@@ -171,7 +169,6 @@
         pointer-events: none;
     }
 
-    /* ============= СТРАНИЦА С НОМЕРАМИ ============= */
     .phones-section {
         min-height: 100vh;
         background-color: #00092F;
@@ -276,7 +273,7 @@
         font-size: 0.9rem;
     }
 
-    /* ============= СТРАНИЦА "ВИДЫ МОШЕННИЧЕСТВА" ============= */
+                     /* СТРАНИЦА "ВИДЫ МОШЕННИЧЕСТВА" */
     .fraud-page {
         min-height: 100vh;
         background-color: #00092F;
@@ -294,20 +291,16 @@
 {% endblock %}
 
 {% block content %}
-<!-- ПЕРВЫЙ ЭКРАН -->
+
 <section class="hero-section">
-    <!-- Верхняя полоса -->
     <div class="top-bar">
         <div class="site-title">CyberShield</div>
     </div>
 
-    <!-- Поле с кнопками -->
     <div class="nav-bar">
         <nav class="main-nav">
-            <!-- Кнопка "Виды мошенничества" -->
             <a href="#fraud-page" class="nav-button-left nav-button-fraud">Виды мошенничества</a>
             <div class="right-buttons">
-                <!-- Правые кнопки -->
                 <a href="#phones" class="nav-button-right nav-button-phone">База номеров</a>
                 <a href="/statistics" class="nav-button-right nav-button-stats">Статистика</a>
                 <a href="/interactive" class="nav-button-right nav-button-trainer">Тренажер</a>
@@ -334,7 +327,6 @@
     </div>
 </section>
 
-<!-- Страница с номерами -->
 <section id="phones" class="phones-section">
     <div class="phones-container">
         <h1 class="phones-title">📋 База номеров мошенников</h1>
@@ -380,7 +372,6 @@
     </div>
 </section>
 
-<!-- Страница "Виды мошенничества" -->
 <section id="fraud-page" class="fraud-page">
     <div class="container">
         <h1 class="fraud-title">Виды мошенничества</h1>
