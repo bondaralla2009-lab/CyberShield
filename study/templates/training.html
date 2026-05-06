@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Тренажер - КиберЩит{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<div class="training-page">
+    <div class="training-container">
+        <div class="progress-top">
+            <div class="letter-number">
+                📧 Письмо <span>{{ letter_num }}</span> из <span>{{ total_letters }}</span>
+            </div>
+            <div class="found-counter">
+                🎯 Найдено подозрительных мест: <span>{{ found_count }}</span> из <span>{{ total_threats }}</span>
+            </div>
+        </div>
+
+        <!-- письмо -->
+        <div class="email-card">
+            <div class="email-header">
+                <div><strong>От:</strong> {{ letter.from }}</div>
+                <div><strong>Кому:</strong> {{ letter.to }}</div>
+                <div><strong>Тема:</strong> {{ letter.subject }}</div>
+            </div>
+            <div class="email-body">
+                {{ body_html | safe }}
+            </div>
+        </div>
+
+        <!-- объяснения -->
+        <div class="info-box">
+            <h3>🎣 Как распознать фишинговое письмо?</h3>
+            <ul>
+                <li>⚠️ Подозрительный адрес отправителя (отличается от официального)</li>
+                <li>🔗 Ссылки на неизвестные или похожие на официальные домены</li>
+                <li>⏰ Срочные требования действий (ограничение по времени)</li>
+                <li>💰 Просьба оплатить или ввести личные данные</li>
+                <li>🚨 Угрозы блокировки аккаунта</li>
+            </ul>
+            <p>👉 Кликайте на подозрительные места в письме — они будут зачёркиваться красным</p>
+        </div>
+        <br>
+        <a href="/" class="back-button">← На главную</a>
+    </div>
+</div>
+
+<script>
+    // Скрипт для отправки POST при клике на подозрительные места
+    const threats = document.querySelectorAll('.threat:not(.found)');
+    threats.forEach(function(threat) {
+        threat.addEventListener('click', function() {
+            const threatId = this.getAttribute('data-threat');
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.innerHTML = '<input type="hidden" name="threat_id" value="' + threatId + '">';
+            document.body.appendChild(form);
+            form.submit();
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Проверка номера - КиберЩит{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<div class="check-page">
+    <div class="check-container">
+        <a href="/" class="back-home">← Вернуться на главную</a>
+
+        <h1 class="check-title">🔍 Проверка номера телефона</h1>
+
+        <div class="check-card">
+            <form method="POST" class="check-form">
+                <div class="input-group">
+                    <label>Введите номер телефона</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📞</span>
+                        <input type="text" name="phone" placeholder="+7 (999) 123-45-67" required>
+                    </div>
+                </div>
+                <button type="submit" class="check-submit">🔍 ПРОВЕРИТЬ НОМЕР</button>
+            </form>
+
+            {% if message %}
+            <div class="message {% if '✅' in message %}success{% else %}error{% endif %}">
+                {{ message }}
+            </div>
+            {% endif %}
+
+            {% if result %}
+            <div class="result-card">
+                <h3>📊 Результат проверки</h3>
+                <div class="result-info">
+                    <div class="result-row">
+                        <span class="result-label">Номер:</span>
+                        <span class="result-value phone-number">
+                            {{ format_phone(result[0]) if result[0] else searched_phone }}
+                        </span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Рейтинг опасности:</span>
+                        <span class="result-value rating {% if result[1] >= 5 %}danger{% elif result[1] >= 2 %}warning{% else %}safe{% endif %}">
+                            {{ result[1] }}
+                        </span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Источник:</span>
+                        <span class="result-value">
+                            {% if result[2] == 'user' %}
+                            👤 Пользователь
+                            {% else %}
+                            📋 База данных
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+                {% if session.user_id %}
+                <div class="report-section">
+                    <form method="POST" class="report-form">
+                        <input type="hidden" name="phone" value="{{ searched_phone }}">
+                        <input type="hidden" name="report" value="yes">
+                        <button type="submit" class="report-button">⚠️ Пожаловаться на этот номер</button>
+                    </form>
+                    <p class="report-note">* После жалобы рейтинг номера увеличится, и он поднимется выше в таблице.</p>
+                </div>
+                {% else %}
+                <div class="login-prompt">
+                    <p>🔐 <a href="/login">Войдите</a> или <a href="/register">зарегистрируйтесь</a>, чтобы сообщить о
+                        мошенническом номере</p>
+                </div>
+                {% endif %}
+            </div>
+            {% else %}
+            <!-- когда номер не найден -->
+            {% if searched_phone %}
+            <div class="result-card not-found">
+                <h3>📊 Результат проверки</h3>
+                <div class="result-info">
+                    <div class="result-row">
+                        <span class="result-label">Номер:</span>
+                        <span class="result-value phone-number">
+                            {{ format_phone(searched_phone|replace(' ', '')|replace('+', '')|replace('-', '')|replace('(', '')|replace(')', '')) if searched_phone else '' }}
+                        </span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Статус:</span>
+                        <span class="result-value not-found-status">
+                            ❌ Не находится в базе данных
+                        </span>
+                    </div>
+                </div>
+
+                {% if session.user_id %}
+                <div class="report-section">
+                    <form method="POST" class="report-form">
+                        <input type="hidden" name="phone" value="{{ searched_phone }}">
+                        <input type="hidden" name="report" value="yes">
+                        <button type="submit" class="report-button">⚠️ Сообщить о мошенническом номере</button>
+                    </form>
+                    <p class="report-note">* Если вам звонили с этого номера, добавьте его в базу, чтобы помочь
+                        другим.</p>
+                </div>
+                {% else %}
+                <div class="login-prompt">
+                    <p>🔐 <a href="/login">Войдите</a> или <a href="/register">зарегистрируйтесь</a>, чтобы добавить
+                        номер в базу</p>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+
+        <div class="info-box">
+            <h3>💡 Как это работает</h3>
+            <p>1. Введите номер телефона, который вам позвонил</p>
+            <p>2. Система проверит его по базе мошеннических номеров</p>
+            <p>3. Если номер есть в базе, вы увидите его рейтинг опасности</p>
+            <p>4. Вы можете добавить жалобу, чтобы помочь другим пользователям</p>
+            <p>5. Чем больше жалоб на номер, тем выше его рейтинг в таблице</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

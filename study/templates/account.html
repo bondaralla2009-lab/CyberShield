@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Личный кабинет - КиберЩит{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<div class="account-page">
+    <div class="account-container">
+        <a href="/" class="back-home">← Вернуться на главную</a>
+
+        <div class="account-header">
+            <h1 class="account-title">Личный кабинет</h1>
+        </div>
+
+        <div class="account-info">
+            <div class="user-login">
+                <span class="login-label">Логин:</span>
+                <span class="login-value">{{ user[0] if user else session.username }}</span>
+            </div>
+        </div>
+
+        <div class="history-section">
+            <h2 class="history-title">История проверенных номеров</h2>
+
+            {% if reports %}
+            <div class="table-container">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Номер телефона</th>
+                            <th>Дата проверки</th>
+                        </thead>
+                        <tbody>
+                        {% for report in reports %}
+                        <tr>
+                            <td class="rank">{{ loop.index }}</td>
+                            <td class="number-cell">
+                                +7 ({{ report[0][0:3] }}) {{ report[0][3:6] }}-{{ report[0][6:8] }}-{{ report[0][8:10] }}
+                            </td>
+                            <td class="date-cell">{{ report[1] }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-history">
+                    <p>📭 Здесь будут номера, что Вы проверяли.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="account-actions">
+            <a href="/check" class="check-button">🔍 Проверить номер</a>
+            <a href="/logout" class="logout-button">Выйти из аккаунта</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

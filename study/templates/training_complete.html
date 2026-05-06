@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Тренажер пройден - КиберЩит{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<div class="complete-page">
+    <div class="complete-card">
+        <h1>🎉 Поздравляем!</h1>
+        <p>Вы успешно прошли тренажёр!<br>
+        Теперь вы знаете, как распознать фишинговое письмо<br>
+        и не попадётесь на уловки мошенников.</p>
+        <a href="/" class="btn">Вернуться на главную</a>
+    </div>
+</div>
+{% endblock %}

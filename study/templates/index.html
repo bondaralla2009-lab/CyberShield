@@ -2,295 +2,8 @@
 
 {% block title %}КиберЩит - Главная{% endblock %}
 
-{% block extra_css %}
-<style>
-
-    .hero-section {
-        height: 105vh;
-        position: relative;
-        background-color: #00092F;
-    }
-
-    /* Верхняя полоса */
-    .top-bar {
-        height: 60px;
-        background-color: #00092F;
-        display: flex;
-        align-items: center;
-        padding-left: 40px;
-        position: relative;
-        z-index: 3;
-    }
-
-    .site-title {
-        color: #E5E9F0;
-        font-size: 1.8rem;
-        font-weight: bold;
-        text-shadow: 0 0 80px #00FF85;
-    }
-
-    /* Поле с кнопками */
-    .nav-bar {
-        height: 45px;
-        background-color: #081246;
-        display: flex;
-        align-items: center;
-        padding: 0 40px;
-        position: relative;
-        z-index: 3;
-    }
-
-    .main-nav {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-    }
-
-                    /* ЗДЕСЬ ТЕПЕРЬ ДВИГАЕМ КНОПКИ  */
-
-    /* Для "Виды мошенничества" */
-    .nav-button-fraud {
-        margin-left: 10px !important;
-        transition: transform 0.2s ease;
-    }
-
-    .nav-button-fraud:hover {
-        transform: translateY(-3px);
-    }
-
-    /* Контейнер правых кнопок */
-    .right-buttons {
-        display: flex;
-        gap: 40px;
-    }
-
-    /* Для "База номеров" */
-    .nav-button-phone {
-        margin-left: 0px !important;
-        transition: transform 0.2s ease;
-    }
-
-    .nav-button-phone:hover {
-        transform: translateY(-3px);
-    }
-
-    /* Для "Статистика" */
-    .nav-button-stats {
-        margin-left: 0px !important;
-        transition: transform 0.2s ease;
-    }
-
-    .nav-button-stats:hover {
-        transform: translateY(-3px);
-    }
-
-    /* Для "Тренажер" */
-    .nav-button-trainer {
-        margin-left: 0px !important;
-        transition: transform 0.2s ease;
-    }
-
-    .nav-button-trainer:hover {
-        transform: translateY(-3px);
-    }
-
-    /* Для "Чек-лист" */
-    .nav-button-checklist {
-        margin-left: 0px !important;
-        transition: transform 0.2s ease;
-    }
-
-    .nav-button-checklist:hover {
-        transform: translateY(-3px);
-    }
-
-            /*  КНОПКИ РЕГИСТРАЦИИ  */
-    .auth-buttons {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        display: flex;
-        gap: 20px;
-        z-index: 20;
-    }
-
-    .auth-btn {
-        padding: 10px 20px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 1rem;
-        transition: all 0.2s ease;
-        cursor: pointer;
-    }
-
-    .login-btn {
-        border: 2px solid #0b2a5b;
-        color: white;
-        background: transparent;
-        box-shadow: 0 0 60px #001b94;
-    }
-
-    .login-btn:hover {
-        background-color: #185ecd;
-        color: #00092F;
-        transform: scale(1.05);
-    }
-
-    .register-btn {
-        background-color: #185ecd;
-        color: #00092F;
-        border: 2px solid #185ecd;
-    }
-
-    .register-btn:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 70px #001b94;
-    }
-
-                         /*ФОТО*/
-    .image-container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 10;
-        pointer-events: none;
-    }
-
-    .image-container img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-        pointer-events: none;
-    }
-
-    .phones-section {
-        min-height: 100vh;
-        background-color: #00092F;
-        padding: 60px 40px;
-        border-top: 2px solid #081246;
-    }
-
-    .phones-container {
-        max-width: 900px;
-        margin: 0 auto;
-    }
-
-    .phones-title {
-        color: #00FF85;
-        font-size: 2.5rem;
-        margin-bottom: 40px;
-        text-align: center;
-    }
-
-    .table-container {
-        background-color: #081246;
-        border-radius: 20px;
-        padding: 30px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 30px;
-    }
-
-    th {
-        text-align: left;
-        padding: 15px 10px;
-        color: #00FF85;
-        font-size: 1.2rem;
-        border-bottom: 2px solid #00FF85;
-    }
-
-    td {
-        padding: 15px 10px;
-        border-bottom: 1px solid #2A3A5F;
-    }
-
-    .number-cell {
-        font-size: 1.3rem;
-        font-weight: bold;
-        color: white;
-    }
-
-    .danger-badge {
-        background-color: rgba(255, 75, 75, 0.2);
-        color: #FF4B4B;
-        padding: 5px 10px;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: bold;
-    }
-
-    .source-badge {
-        background-color: rgba(0, 255, 133, 0.2);
-        color: #00FF85;
-        padding: 3px 8px;
-        border-radius: 12px;
-        font-size: 0.7rem;
-    }
-
-    .report-count {
-        font-weight: bold;
-        color: #FFD700;
-    }
-
-    .update-time {
-        text-align: right;
-        color: #8892B0;
-        font-size: 0.8rem;
-        margin-bottom: 10px;
-    }
-
-    .check-button {
-        display: inline-block;
-        background-color: #00FF85;
-        color: #00092F;
-        padding: 15px 40px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 1.2rem;
-        transition: 0.3s;
-    }
-
-    .check-button:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 15px #00FF85;
-    }
-
-    .footer-note {
-        text-align: center;
-        margin-top: 20px;
-        color: #8892B0;
-        font-size: 0.9rem;
-    }
-
-                     /* СТРАНИЦА "ВИДЫ МОШЕННИЧЕСТВА" */
-    .fraud-page {
-        min-height: 100vh;
-        background-color: #00092F;
-        padding: 60px 40px;
-        border-top: 2px solid #081246;
-    }
-
-    .fraud-title {
-        color: #00FF85;
-        font-size: 3rem;
-        margin-bottom: 40px;
-        text-align: center;
-    }
-</style>
-{% endblock %}
-
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
 <section class="hero-section">
     <div class="top-bar">
@@ -302,87 +15,229 @@
             <a href="#fraud-page" class="nav-button-left nav-button-fraud">Виды мошенничества</a>
             <div class="right-buttons">
                 <a href="#phones" class="nav-button-right nav-button-phone">База номеров</a>
-                <a href="/statistics" class="nav-button-right nav-button-stats">Статистика</a>
-                <a href="/interactive" class="nav-button-right nav-button-trainer">Тренажер</a>
-                <a href="/checklist" class="nav-button-right nav-button-checklist">Чек-лист</a>
+                <a href="#statistics" class="nav-button-right nav-button-stats">Статистика</a>
+                <a href="{{ url_for('training_force_reset') }}" class="nav-button-right nav-button-trainer">Тренажер</a>
             </div>
         </nav>
     </div>
 
-    <!-- Кнопки регистрации -->
+    <!-- кнопки регистрации -->
     <div class="auth-buttons">
         {% if session.user_id %}
-        <span style="color: #00FF85;">{{ session.username }}</span>
-        <a href="/account" class="auth-btn" style="background-color: #00FF85; color: #00092F; padding: 8px 20px; border-radius: 8px;">Аккаунт</a>
-        <a href="/logout" class="auth-btn" style="border: 2px solid #FF4B4B; color: #FF4B4B; padding: 8px 20px; border-radius: 8px;">Выйти</a>
+        <span class="username-link" onclick="window.location.href='/account'">{{ session.username }}</span>
         {% else %}
         <a href="/login" class="auth-btn login-btn">Войти</a>
         <a href="/register" class="auth-btn register-btn">Регистрация</a>
         {% endif %}
     </div>
 
-    <!-- Фото -->
     <div class="image-container">
-        <img src="/static/img/Group 6 (12).png" alt="Фото">
+        <img src="{{ url_for('static', filename='img/Group 6 (12).png') }}" alt="Фото">
     </div>
 </section>
 
+                                   <!--  БЛОК 1: БАЗА НОМЕРОВ  -->
 <section id="phones" class="phones-section">
     <div class="phones-container">
         <h1 class="phones-title">📋 База номеров мошенников</h1>
         <div class="update-time">
-            Данные обновлены: {{ now().strftime('%d.%m.%Y %H:%M') if now else 'сегодня' }}
+            Данные обновлены: {{ now().strftime('%d.%m.%Y %H:%M') }}
         </div>
         <div class="table-container">
-            <table>
+            <table class="phones-table">
                 <thead>
                 <tr>
                     <th>#</th>
                     <th>Номер телефона</th>
                     <th>Жалоб</th>
                     <th>Источник</th>
-                    <th>Статус</th>
-                </tr>
                 </thead>
                 <tbody>
                 {% for phone in phones %}
-                <tr>
-                    <td>{{ loop.index }}</td>
-                    <td class="number-cell">
-                        +{{ phone[0][0:1] }} ({{ phone[0][1:4] }}) {{ phone[0][4:7] }}-{{ phone[0][7:9] }}-{{ phone[0][9:11] }}
+                <tr class="{% if loop.index <= 3 %}top-three{% endif %}">
+                    <td class="rank">
+                        {% if loop.index == 1 %}👑 1
+                        {% elif loop.index == 2 %}🥈 2
+                        {% elif loop.index == 3 %}🥉 3
+                        {% else %}{{ loop.index }}{% endif %}
                     </td>
-                    <td><span class="report-count">{{ phone[1] }}</span></td>
-                    <td>
-                        {% if phone[2] == 'official' %}
-                        <span class="source-badge">🏛️ Официальный</span>
+                    <td class="number-cell">
+                        {{ phone[0] }}
+                    </td>
+                    <td class="reports-count">
+                        <span class="count-badge {% if phone[1] > 0 %}active{% endif %}">
+                            {{ phone[1] }}
+                        </span>
+                    </td>
+                    <td class="source-cell">
+                        {% if phone[2] == 'user' %}
+                        <span class="source-badge user">👤 Пользователь</span>
                         {% else %}
-                        <span class="source-badge">👤 Пользователи</span>
+                        <span class="source-badge database">📋 В базе данных</span>
                         {% endif %}
                     </td>
-                    <td><span class="danger-badge">⚠️ ОПАСНО</span></td>
                 </tr>
                 {% endfor %}
                 </tbody>
             </table>
-            <div style="text-align: center;">
-                <a href="/check" class="check-button">🔍 Проверить номер</a>
+            <div class="table-footer">
+                <div class="button-center">
+                    <a href="/check" class="check-button">🔍 ПРОВЕРИТЬ НОМЕР</a>
+                </div>
             </div>
         </div>
-        <p class="footer-note">* Данные собираются автоматически с сайтов МВД, ЦБ РФ и открытых источников</p>
+        <p class="footer-note">* Чем больше жалоб на номер, тем выше его позиция в рейтинге</p>
     </div>
 </section>
 
+                                          <!--  БЛОК 2: СТАТИСТИКА -->
+<section id="statistics" class="stats-section">
+    <div class="stats-container">
+        <h1 class="stats-title">Статистика киберпреступлений</h1>
+
+        <!-- 3 гл карточки -->
+        <div class="stats-cards">
+            <div class="stat-card">
+                <div class="big-number">27.5 млрд ₽</div>
+                <div class="label">Украдено за 2024 год</div>
+                <div class="small-note">по данным ЦБ РФ</div>
+            </div>
+            <div class="stat-card">
+                <div class="big-number">500+ тыс.</div>
+                <div class="label">Киберпреступлений за 2024 год</div>
+                <div class="small-note">по данным МВД РФ</div>
+            </div>
+            <div class="stat-card">
+                <div class="big-number">39 сек</div>
+                <div class="label">Каждые 39 секунд</div>
+                <div class="small-note">происходит атака</div>
+            </div>
+        </div>
+
+        <!-- График роста -->
+        <div class="graph-section">
+            <h2 class="graph-title">📈 Динамика роста ущерба (млрд ₽ / год)</h2>
+            <div class="graph-container">
+                <div class="bar" style="height: 55px;">
+                    <div class="bar-value">8.1 млрд</div>
+                    <div class="bar-label">2020</div>
+                </div>
+                <div class="bar" style="height: 70px;">
+                    <div class="bar-value">10.2 млрд</div>
+                    <div class="bar-label">2021</div>
+                </div>
+                <div class="bar" style="height: 95px;">
+                    <div class="bar-value">14.2 млрд</div>
+                    <div class="bar-label">2022</div>
+                </div>
+                <div class="bar" style="height: 105px;">
+                    <div class="bar-value">15.8 млрд</div>
+                    <div class="bar-label">2023</div>
+                </div>
+                <div class="bar" style="height: 183px;">
+                    <div class="bar-value">27.5 млрд</div>
+                    <div class="bar-label">2024</div>
+                </div>
+                <div class="bar" style="height: 195px;">
+                    <div class="bar-value">29.3 млрд</div>
+                    <div class="bar-label">2025</div>
+                </div>
+            </div>
+            <div class="axis-label">▼ Год</div>
+        </div>
+    </div>
+</section>
+
+                                      <!--  БЛОК 3: ВИДЫ МОШЕННИЧЕСТВА -->
 <section id="fraud-page" class="fraud-page">
-    <div class="container">
+    <div class="fraud-container">
         <h1 class="fraud-title">Виды мошенничества</h1>
-        <p>Здесь будет информация о различных видах кибермошенничества:</p>
-        <ul style="margin-top: 30px; margin-left: 40px;">
-            <li>Фишинг</li>
-            <li>Вишинг</li>
-            <li>Смишинг</li>
-            <li>Мошенничество на маркетплейсах</li>
-            <li>Инвестиционные ловушки</li>
-        </ul>
+        <div class="fraud-grid">
+            <div class="fraud-list">
+                <!-- Фишинг -->
+                <div class="fraud-card">
+                    <div class="fraud-icon">🎣</div>
+                    <div class="fraud-info">
+                        <h3>Фишинг</h3>
+                        <p>Поддельные сайты и письма, маскирующиеся под настоящие</p>
+                    </div>
+                    <div class="hover-info">
+                        <h4>Как происходит?</h4>
+                        <p>Мошенники создают копию сайта банка или госуслуг и рассылают ссылки через письма и СМС.
+                            Жертва вводит свои данные, которые попадают к злоумышленникам.</p>
+                        <h4>Как защититься?</h4>
+                        <p>Не переходи по ссылкам из писем, проверяй адрес сайта вручную, включи двухфакторную
+                            аутентификацию.</p>
+                    </div>
+                </div>
+
+                <!-- Вишинг -->
+                <div class="fraud-card">
+                    <div class="fraud-icon">📞</div>
+                    <div class="fraud-info">
+                        <h3>Вишинг</h3>
+                        <p>Звонки от "службы безопасности банка"</p>
+                    </div>
+                    <div class="hover-info">
+                        <h4>Как происходит?</h4>
+                        <p>Мошенник представляется сотрудником банка и под давлением вынуждает назвать код из СМС или
+                            перевести деньги на «безопасный счёт».</p>
+                        <h4>Как защититься?</h4>
+                        <p>Положи трубку и перезвони в банк сам по номеру на карте. Никогда не называй коды из СМС.</p>
+                    </div>
+                </div>
+
+                <!-- Смишинг -->
+                <div class="fraud-card">
+                    <div class="fraud-icon">📱</div>
+                    <div class="fraud-info">
+                        <h3>Смишинг</h3>
+                        <p>СМС с вредоносными ссылками</p>
+                    </div>
+                    <div class="hover-info">
+                        <h4>Как происходит?</h4>
+                        <p>Жертве приходит СМС о «выигрыше» или «проблеме с картой» со ссылкой на фишинговый сайт.</p>
+                        <h4>Как защититься?</h4>
+                        <p>Никогда не переходи по ссылкам из СМС от незнакомцев. Проверяй информацию в официальном
+                            приложении.</p>
+                    </div>
+                </div>
+
+                <!-- Маркетплейсы -->
+                <div class="fraud-card">
+                    <div class="fraud-icon">🛒</div>
+                    <div class="fraud-info">
+                        <h3>Мошенничество на маркетплейсах</h3>
+                        <p>Обман при покупках на Wildberries, Ozon, Avito</p>
+                    </div>
+                    <div class="hover-info">
+                        <h4>Как происходит?</h4>
+                        <p>Продавец просит перейти в мессенджер для «скидки» и оплатить товар по прямой ссылке, минуя
+                            защиту площадки.</p>
+                        <h4>Как защититься?</h4>
+                        <p>Общайся и оплачивай только внутри официального приложения. Не переходи по внешним
+                            ссылкам.</p>
+                    </div>
+                </div>
+
+                <!-- Инвестиции -->
+                <div class="fraud-card">
+                    <div class="fraud-icon">💰</div>
+                    <div class="fraud-info">
+                        <h3>Инвестиционные ловушки</h3>
+                        <p>"Сверхдоходные" вложения, финансовые пирамиды</p>
+                    </div>
+                    <div class="hover-info">
+                        <h4>Как происходит?</h4>
+                        <p>Обещают баснословную прибыль от инвестиций в криптовалюты или уникальные проекты, а затем
+                            исчезают с деньгами.</p>
+                        <h4>Как защититься?</h4>
+                        <p>Доходность выше рыночной — признак мошенничества. Проверяй лицензию на сайте Банка
+                            России.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -390,9 +245,10 @@
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
         });
     });
 </script>
