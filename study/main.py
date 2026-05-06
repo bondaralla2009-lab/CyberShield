@@ -35,6 +35,15 @@ def init_db():
                   reported_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                   FOREIGN KEY (user_id) REFERENCES users (id))''')
 
+    # Новая таблица для истории проверок
+    c.execute('''CREATE TABLE IF NOT EXISTS user_checks
+                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  user_id INTEGER,
+                  phone TEXT,
+                  phone_formatted TEXT,
+                  check_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                  FOREIGN KEY (user_id) REFERENCES users (id))''')
+
     conn.commit()
     conn.close()
 
@@ -53,22 +62,6 @@ def normalize_phone(phone):
     if len(clean) == 11 and clean[0] in ('7', '8'):
         clean = clean[1:]
     return clean if len(clean) == 10 else None
-
-
-def update_rankings():
-    conn = sqlite3.connect('database.db')
-    c = conn.cursor()
-
-    c.execute('''SELECT phone, reports_count FROM phone_numbers 
-                 WHERE reports_count > 0 ORDER BY reports_count DESC''')
-    ranked = c.fetchall()
-
-    for idx, (phone, _) in enumerate(ranked, 1):
-        c.execute("UPDATE phone_numbers SET reports_count = ? WHERE phone = ?", (idx, phone))
-
-    conn.commit()
-    conn.close()
-
 
 @app.route('/')
 def home():
@@ -102,6 +95,19 @@ def check_phone():
             conn = sqlite3.connect('database.db')
             c = conn.cursor()
 
+            # Сохраняем проверку в историю пользователя
+            if session.get('user_id'):
+                user_id = session['user_id']
+                formatted_phone = format_phone_display(clean_phone)
+                try:
+                    c.execute('''INSERT INTO user_checks (user_id, phone, phone_formatted) 
+                                 VALUES (?, ?, ?)''', (user_id, clean_phone, formatted_phone))
+                    # Обновляем счетчик проверок пользователя
+                    c.execute('''UPDATE users SET checks_count = checks_count + 1 
+                                 WHERE id = ?''', (user_id,))
+                except sqlite3.Error:
+                    pass  # Игнор ошибок
+
             # ищем по красивому номеру
             c.execute('''SELECT phone, reports_count, source FROM phone_numbers 
                          WHERE phone_raw = ?''', (clean_phone,))
@@ -122,30 +128,39 @@ def check_phone():
                                  VALUES (?, ?)''', (user_id, clean_phone))
 
                     if result:
-                        # обновляем рейтинг
+                        # увел рейтинг
                         new_count = result[1] + 1
                         c.execute('''UPDATE phone_numbers 
                                      SET reports_count = ?, 
                                          last_seen = CURRENT_TIMESTAMP 
                                      WHERE phone_raw = ?''', (new_count, clean_phone))
+
+                        # обнов акк пользователя за проверку
+                        c.execute('''SELECT checks_count FROM users WHERE id = ?''', (user_id,))
+                        checks = c.fetchone()[0]
+                        if checks >= 50:
+                            c.execute('''UPDATE users SET status = 'Эксперт' WHERE id = ?''', (user_id,))
+                        elif checks >= 20:
+                            c.execute('''UPDATE users SET status = 'Опытный' WHERE id = ?''', (user_id,))
+                        elif checks >= 5:
+                            c.execute('''UPDATE users SET status = 'Активный' WHERE id = ?''', (user_id,))
+
                         message = f"✅ Жалоба добавлена! Рейтинг увеличен до {new_count}"
 
-                        # обнова реза
+                        # обновляем результат
                         c.execute('''SELECT phone, reports_count, source FROM phone_numbers 
                                      WHERE phone_raw = ?''', (clean_phone,))
                         result = c.fetchone()
                     else:
-                        # добав новый номера в бд
+                        # добавляем новый номер в бд
                         formatted_phone = format_phone_display(clean_phone)
                         c.execute('''INSERT INTO phone_numbers (phone, phone_raw, source, reports_count) 
                                      VALUES (?, ?, ?, ?)''', (formatted_phone, clean_phone, 'user', 1))
-                        message = "✅ Новый номер добавлен в базу!"
+                        message = "✅ Новый номер добавлен в базу! Спасибо за бдительность!"
                         # получаем новый номер
                         c.execute('''SELECT phone, reports_count, source FROM phone_numbers 
                                      WHERE phone_raw = ?''', (clean_phone,))
                         result = c.fetchone()
-
-                    update_rankings()
 
             conn.commit()
             conn.close()
@@ -242,14 +257,24 @@ def account():
               (session['user_id'],))
     user = c.fetchone()
 
+    # Жалобы пользователя
     c.execute('''SELECT phone, reported_date FROM user_reports 
                  WHERE user_id = ? ORDER BY reported_date DESC LIMIT 10''',
               (session['user_id'],))
     reports = c.fetchall()
 
+    # ИСТОРИЯ ПРОВЕРОК - показываем все проверенные номера
+    c.execute('''SELECT phone_formatted, check_date FROM user_checks 
+                 WHERE user_id = ? ORDER BY check_date DESC LIMIT 20''',
+              (session['user_id'],))
+    checks_history = c.fetchall()
+
     conn.close()
 
-    return render_template('account.html', user=user, reports=reports)
+    return render_template('account.html',
+                           user=user,
+                           reports=reports,
+                           checks_history=checks_history)
 
 
 @app.route('/logout')
@@ -264,7 +289,7 @@ def utility_processor():
     return {'now': datetime.now}
 
 
-                                                    #  ТРЕНАЖЕР
+# ТРЕНАЖЕР
 TRAINING_LETTERS = [
     {
         'id': 1,
